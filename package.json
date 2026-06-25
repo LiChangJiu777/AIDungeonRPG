@@ -1,0 +1,22 @@
+{
+  "name": "ai-dungeon-rpg",
+  "private": true,
+  "scripts": {
+    "dev": "turbo dev",
+    "build": "turbo build",
+    "lint": "turbo lint",
+    "format": "prettier --write .",
+    "db:migrate": "cd apps/server && npx prisma migrate dev",
+    "db:generate": "cd apps/server && npx prisma generate",
+    "db:seed": "cd apps/server && npx prisma db seed"
+  },
+  "devDependencies": {
+    "turbo": "^2.0.0",
+    "prettier": "^3.2.0",
+    "typescript": "^5.5.0"
+  },
+  "packageManager": "pnpm@9.4.0",
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}
