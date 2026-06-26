@@ -9,27 +9,30 @@
     "start": "node dist/index.js",
     "lint": "tsc --noEmit"
   },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
+  },
   "dependencies": {
-    "fastify": "^4.28.0",
+    "@ai-dungeon/agent-core": "workspace:*",
+    "@ai-dungeon/shared": "workspace:*",
     "@fastify/cors": "^9.0.0",
     "@fastify/jwt": "^8.0.0",
     "@prisma/client": "^5.17.0",
-    "ioredis": "^5.4.0",
-    "bullmq": "^5.12.0",
-    "zod": "^3.23.0",
-    "openai": "^4.52.0",
     "bcryptjs": "^2.4.3",
-    "jsonwebtoken": "^9.0.0",
+    "bullmq": "^5.12.0",
     "dotenv": "^16.4.0",
-    "@ai-dungeon/shared": "workspace:*",
-    "@ai-dungeon/agent-core": "workspace:*"
+    "fastify": "^4.28.0",
+    "ioredis": "^5.4.0",
+    "jsonwebtoken": "^9.0.0",
+    "openai": "^4.52.0",
+    "zod": "^3.23.0"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.0",
+    "@types/jsonwebtoken": "^9.0.0",
+    "@types/node": "^20.19.43",
     "prisma": "^5.17.0",
     "tsx": "^4.16.0",
-    "typescript": "^5.5.0",
-    "@types/node": "^20.14.0",
-    "@types/bcryptjs": "^2.4.0",
-    "@types/jsonwebtoken": "^9.0.0"
+    "typescript": "^5.5.0"
   }
 }

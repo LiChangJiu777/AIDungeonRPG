@@ -1,0 +1,81 @@
+services:
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      web:
+        condition: service_started
+      server:
+        condition: service_started
+    networks:
+      - dungeon-net
+    restart: unless-stopped
+
+  web:
+    build:
+      context: ../apps/web
+      dockerfile: Dockerfile
+    expose:
+      - "3000"
+    depends_on:
+      - server
+    networks:
+      - dungeon-net
+    restart: unless-stopped
+
+  server:
+    build:
+      context: ../apps/server
+      dockerfile: Dockerfile
+    expose:
+      - "4000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    env_file:
+      - ../.env
+    networks:
+      - dungeon-net
+    restart: unless-stopped
+
+  postgres:
+    image: pgvector/pgvector:pg16
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: ai_dungeon
+      POSTGRES_USER: dungeon
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-dungeon_pass}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U dungeon -d ai_dungeon"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - dungeon-net
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    volumes:
+      - redisdata:/data
+    ports:
+      - "6379:6379"
+    networks:
+      - dungeon-net
+    restart: unless-stopped
+
+volumes:
+  pgdata:
+  redisdata:
+
+networks:
+  dungeon-net:
+    driver: bridge
